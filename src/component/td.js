@@ -8,8 +8,10 @@ class Td extends Component {
         super(props);
     }
 
-    setCheckList = (type, e) => {
-        this.props.setCheckList(type, e);
+    setCheckList = (type, count, e) => {
+        console.log(this.props)
+
+        this.props.setCheckList(type, count, e.target.checked);
     }
 
     /* 난이도/관문 별 보상 */
@@ -62,15 +64,15 @@ class Td extends Component {
             if( max_level !== 3 && reward.id === max_level){
                 return (
                     <td key={`td_check_${count}_${keyNum}`} className="result_check_td" colSpan={2}>
-                        <input type="checkbox" checked={reward.clear_check} onChange={(e) => this.setCheckList("l", e)}/> 관문진행<br/>
-                        <input type="checkbox" checked={false} onChange={(e) => this.setCheckList("m", e)}/> 더보기
+                        <input type="checkbox" checked={reward.clear_check} onChange={(e) => this.setCheckList("l", count, e)}/> 관문진행<br/>
+                        <input type="checkbox" checked={false} onChange={(e) => this.setCheckList("m", count, e)}/> 더보기
                     </td>
                 )
             } else {
                 return (
                     <td key={`td_check_${count}_${keyNum}`} className="result_check_td">
                         <input type="checkbox" checked={reward.clear_check} onChange={(e) => this.setCheckList("l", e)}/> 관문진행<br/>
-                        <input type="checkbox" checked={false} onChange={(e) => this.setCheckList("m", e)}/> 더보기
+                        <input type="checkbox" checked={false} onChange={(e) => this.setCheckList("m", count, e)}/> 더보기
                     </td>
                 );
             }
@@ -93,7 +95,7 @@ class Td extends Component {
         const contentClearCheckList = this.props.contentClearCheckList;
         return (
             <tr key={`tr_check_${count}`}>
-                <td key={`td_check_${count}_1`} ><input type="checkbox" id={`contentClearCheck_${count}`} checked={contentClearCheckList[count-1]} onChange={(e) => this.setCheckList("c", e)}/></td>
+                <td key={`td_check_${count}_1`} ><input type="checkbox" id={`contentClearCheck_${count}`} checked={contentClearCheckList[count-1]} onChange={(e) => this.setCheckList("c", count, e)}/></td>
                 {this.level_check_td()}
             </tr>
         );

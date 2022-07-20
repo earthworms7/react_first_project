@@ -18,16 +18,38 @@ class App extends Component {
     }
     // 사용자 입장에서는 빠른 화면 전환 등의 장점이 있으나 아무리 생각해도 개발자입장에서는 굉장히 불편하다고 생각됨 ㅋㅋ
     // 굳이 이거까지 상태관리로 해야해? 라는 느낌이 드나,, 리액트는 이렇게 해! 아니면 안돼! 인거라.. 제이쿼리가 개발자입장에선 그냥 직접 엘리먼트 호출해서 다하니까 쉬웠던 것 같음..
-
-    /* 체크박스 값 변경 시 결과 데이터 변경 */
-    setResult = () => {
-
-    }
-
+    
     /* 체크박스 데이터 셋팅 */
-    setCheckList = (type, e) => {
-        if(type === "c"){
+    setCheckList = (type, count, checked) => {
+        console.log("type => " + type + " count => " + count + " checked => " + checked);
+        const resultList = this.state.resultList;
+        let summary = [];
 
+        if(type === "c"){
+            //컨텐츠 갯수 체크
+            let preGrp = null;
+            let isGrp = null;
+            let checkCount = 0;
+
+            resultList.map(content=> {
+                isGrp = content.group;
+
+                if(preGrp !== isGrp && content.clear_check){
+                    checkCount = checkCount + 1;
+                    preGrp = isGrp;
+                }
+            });
+
+            if(checkCount === 3 && checked){
+                alert("군단장 레이드는 최대 3종류만 선택할 수 있습니다.");
+            } else {
+                const contentClearCheckList = this.state.contentClearCheckList;
+                contentClearCheckList[count-1] = checked;
+                resultList[count-1].clear_check = checked;
+                summary = Summary(resultList)
+
+                this.setState({resultList : resultList, summaryList : summary, contentClearCheckList : contentClearCheckList});
+            }
         }else if(type === "l"){
 
         }else if(type === "m"){
@@ -37,12 +59,16 @@ class App extends Component {
 
     /* 조회버튼 클릭 시, input 값으로 결과 조회 */
     clickSearch = (input) => { //input = 레벨
-        this.setState({resultList: [], summaryList: [], contentClearCheckList: []}); //조회버튼 클릭시 초기화
+        // 초기화
+        this.setState({resultList: [], summaryList: [], contentClearCheckList: [] });
+        // 해당 데이터를 받아서 복사해서 사용하는데 왜 원 데이터가 변경이 될까?
+
+
         let result = [];
         let summary = [];
 
         let dummyResult = [];
-
+        
         Reward.map(content => {
             if(content.enterLevel <= input){
                 dummyResult = dummyResult.concat(content);
@@ -89,6 +115,7 @@ class App extends Component {
         }
         
         let conetneClearCheck = [];
+
         //체크박스 상태 셋팅
         result.map(content => {
             conetneClearCheck = conetneClearCheck.concat(content.clear_check);

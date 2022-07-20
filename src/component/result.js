@@ -39,7 +39,7 @@ class Result extends Component{
 class Table extends Component {
     render() {
         return (
-            <Result resultList={this.props.resultList} summaryList={this.props.summaryList} contentClearCheckList={this.props.contentClearCheckList} />
+            <Result resultList={this.props.resultList} summaryList={this.props.summaryList} setCheckList={this.props.setCheckList} contentClearCheckList={this.props.contentClearCheckList} />
         );
     }
 }
