@@ -45,10 +45,12 @@ class App extends Component {
             } else {
                 const contentClearCheckList = this.state.contentClearCheckList;
                 contentClearCheckList[count-1] = checked;
-                resultList[count-1].clear_check = checked;
-                summary = Summary(resultList)
 
-                this.setState({resultList : resultList, summaryList : summary, contentClearCheckList : contentClearCheckList});
+                let changeResultList = resultList.map(item => item.id === resultList[count-1].id ? {...item, clear_check: checked, reward: item.reward.map(level => 1===1 ?{...level, clear_check: checked} : level) } : item);
+
+                summary = Summary(changeResultList)
+
+                this.setState({resultList : changeResultList, summaryList : summary, contentClearCheckList : contentClearCheckList});
             }
         }else if(type === "l"){
 
@@ -61,9 +63,7 @@ class App extends Component {
     clickSearch = (input) => { //input = 레벨
         // 초기화
         this.setState({resultList: [], summaryList: [], contentClearCheckList: [] });
-        // 해당 데이터를 받아서 복사해서 사용하는데 왜 원 데이터가 변경이 될까?
-
-
+       
         let result = [];
         let summary = [];
 
@@ -79,6 +79,7 @@ class App extends Component {
         let count = 0;
         let preGrp = null;
         let isGrp = null;
+        let list = [];
 
         for (var i=dummyResult.length; i>0; i--){
             if(count === 3){
@@ -88,16 +89,22 @@ class App extends Component {
             let isContent = dummyResult[i-1];
             isGrp = isContent.group;
 
-            isContent.clear_check = true;
-            isContent.reward.map(level => {
-                level.clear_check = true;
-            });
+            /* 
+                변경해야하는 값의 id 를 리스트에 저장 =>
+                현 위치에서 = 으로 값을 변경할 경우, Reward.js 의 데이터가 변경됨 (아마 import로 가져온 배열이라 값이 아닌 데이터 주소값이 들어가 있어서 그런 것으로 추정됨.)
+                해당 위치에서 true 값으로 변경되어야하는 id 값만 가지고와서 다음단계에서 데이터 수정한 복사배열을 덮어씌우는 형식으로 처리하여야 함            
+            */
+            list.push(isContent.id);
 
             if (preGrp !== isGrp){
                 preGrp = isGrp;
                 count = count + 1;
             }
         }
+
+        list.map(i => {
+            dummyResult = dummyResult.map(item => item.id === i ? {...item, clear_check: true, reward: item.reward.map(level => 1===1 ?{...level, clear_check: true} : level ) } : item);
+        });
 
         dummyResult.map(content => {
             let dummy = dummyResult.filter((selectContent) => selectContent.group === content.group && selectContent.level[1].id === content.level[1].id
