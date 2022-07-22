@@ -26,7 +26,8 @@ class Result extends Component{
                         </tr>
                     </thead>
                     <tbody> 
-                        <Tr list={this.props.resultList} setCheckList={this.props.setCheckList} contentClearCheckList={this.props.contentClearCheckList}/>
+                        <Tr list={this.props.resultList} setCheckList={this.props.setCheckList} 
+                            contentClearCheckList={this.props.contentClearCheckList} levelClearCheckList={this.props.levelClearCheckList} moreCheckList={this.props.moreCheckList}/>
                         <TrSummary list={this.props.summaryList} />
                     </tbody>
                 </table>
@@ -39,7 +40,8 @@ class Result extends Component{
 class Table extends Component {
     render() {
         return (
-            <Result resultList={this.props.resultList} summaryList={this.props.summaryList} setCheckList={this.props.setCheckList} contentClearCheckList={this.props.contentClearCheckList} />
+            <Result resultList={this.props.resultList} summaryList={this.props.summaryList} setCheckList={this.props.setCheckList} 
+                    contentClearCheckList={this.props.contentClearCheckList} levelClearCheckList={this.props.levelClearCheckList} moreCheckList={this.props.moreCheckList}/>
         );
     }
 }

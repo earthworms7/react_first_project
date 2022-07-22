@@ -42,7 +42,9 @@ function Summary( rewards ) {
                         addNUpdate(item.item, "개", item.qty);
                     });
 
-                    if(reward.more_check === true){ //더보기 시 보상 한 번더 지급. 더보기로 차감되는 골드는 계산 X
+                    if(reward.more_check === true){ //더보기 시 보상 한 번더 지급 및 더보기 골드 차감
+                        // 골드 차감
+                        addNUpdate("골드", "골드", -1 * reward.more_gold);
                         // 보상 추가
                         reward.item.map(item => {
                             addNUpdate(item.item, "개", item.qty);
@@ -53,8 +55,6 @@ function Summary( rewards ) {
         }
     });
     
-
-    console.log("SummaryList !!!!! =====> ", SummaryList);
     return SummaryList;
 }
 

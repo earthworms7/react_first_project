@@ -9,7 +9,8 @@ class Tr extends Component {
             this.props.list.map(item =>{
               count = count + 1;
               return (
-                <Td key={item.id} item={item} count={count} setCheckList={this.props.setCheckList} contentClearCheckList={this.props.contentClearCheckList}/>
+                <Td key={item.id} item={item} count={count} setCheckList={this.props.setCheckList}
+                    contentClearCheckList={this.props.contentClearCheckList} levelClearCheckList={this.props.levelClearCheckList} moreCheckList={this.props.moreCheckList}/>
               )
             })
       );
